@@ -1,0 +1,219 @@
+{
+ "bitwarden": {
+  "id": "bitwarden",
+  "label": "Bitwarden / Vaultwarden",
+  "status": "ready",
+  "configFields": [
+   {
+    "name": "server",
+    "label": "Server",
+    "type": "select",
+    "default": "bitwarden.com",
+    "options": [
+     {
+      "value": "bitwarden.com",
+      "label": "bitwarden.com – Cloud USA"
+     },
+     {
+      "value": "bitwarden.eu",
+      "label": "bitwarden.eu – Cloud EU"
+     }
+    ],
+    "custom": {
+     "label": "Selbst gehostet / Vaultwarden …",
+     "placeholder": "https://vault.example.org"
+    }
+   },
+   {
+    "name": "email",
+    "label": "E-Mail",
+    "type": "email",
+    "required": true
+   }
+  ],
+  "unlockLabel": "Master-Passwort",
+  "unlockOptions": [
+   "apikey"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login",
+    "note",
+    "card",
+    "identity"
+   ],
+   "fields": true,
+   "createFolder": true,
+   "trash": true,
+   "restore": true,
+   "attachments": true,
+   "attachmentUpload": true,
+   "passkeys": true,
+   "organizations": true
+  }
+ },
+ "passbolt": {
+  "id": "passbolt",
+  "label": "Passbolt",
+  "status": "ready",
+  "note": "Benötigt deinen privaten Schlüssel (Wiederherstellungs-Kit, passphrasegeschützt) und deine Benutzer-ID.",
+  "configFields": [
+   {
+    "name": "server",
+    "label": "Passbolt-Adresse",
+    "type": "url",
+    "required": true,
+    "placeholder": "https://passbolt.example.org"
+   },
+   {
+    "name": "userId",
+    "label": "Benutzer-ID",
+    "type": "text",
+    "required": true,
+    "placeholder": "8bb6e5e2-…",
+    "hint": "In Passbolt unter Benutzer → dein Eintrag; die UUID steht in der Adresszeile."
+   },
+   {
+    "name": "privateKey",
+    "label": "Privater Schlüssel",
+    "type": "keyfile",
+    "required": true,
+    "placeholder": "-----BEGIN PGP PRIVATE KEY BLOCK-----",
+    "fileLabel": "Kit-Datei laden …",
+    "hint": "passbolt-recovery-kit.asc",
+    "accept": ".asc,.txt,.key"
+   }
+  ],
+  "unlockLabel": "Passphrase des privaten Schlüssels",
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login",
+    "note"
+   ],
+   "fields": true,
+   "createFolder": true,
+   "share": true
+  }
+ },
+ "keepassxc": {
+  "id": "keepassxc",
+  "label": "KeePassXC",
+  "status": "ready",
+  "note": "Über KeePassXCs Browser-Schnittstelle (keepassxc-proxy). Voraussetzung: KeePassXC läuft mit geöffneter Datenbank, Browser-Integration ist eingeschaltet, unter „Erweitert“ ist das Auflisten aller Einträge erlaubt, und die Verbindung ist eingerichtet (native/README.md). Beim ersten Verbinden fragt KeePassXC nach einem Namen für OmniVault.",
+  "configFields": [],
+  "unlockMode": "none",
+  "optionalPermissions": [
+   "nativeMessaging"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login"
+   ],
+   "favorites": false,
+   "folderLabel": "Gruppe",
+   "createFolder": true,
+   "moveFolder": false,
+   "fields": false,
+   "notes": false,
+   "totp": false,
+   "editTotp": false,
+   "name": false,
+   "needsUrl": true
+  }
+ },
+ "protonpass": {
+  "id": "protonpass",
+  "label": "Proton Pass",
+  "status": "ready",
+  "note": "Über das offizielle Proton Pass CLI (pass-cli). Voraussetzung: pass-cli installiert, im Terminal mit „pass-cli login“ angemeldet und der OmniVault-Host eingerichtet (native/README.md). Proton gibt pass-cli derzeit nur für kostenpflichtige Tarife frei.",
+  "configFields": [],
+  "unlockMode": "none",
+  "optionalPermissions": [
+   "nativeMessaging"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login",
+    "note"
+   ],
+   "favorites": false,
+   "editTotp": false,
+   "folderLabel": "Tresor",
+   "trash": true,
+   "moveFolder": true
+  }
+ },
+ "pass": {
+  "id": "pass",
+  "label": "pass (password-store)",
+  "status": "ready",
+  "note": "Über das lokale „pass“ (zx2c4 password-store) mit gpg und den OmniVault-Host (native/README.md).",
+  "configFields": [],
+  "unlockMode": "none",
+  "optionalPermissions": [
+   "nativeMessaging"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login"
+   ],
+   "favorites": false,
+   "folderLabel": "Ordner",
+   "trash": false,
+   "moveFolder": true,
+   "fields": true,
+   "createFolder": true
+  }
+ },
+ "onepassword": {
+  "id": "onepassword",
+  "label": "1Password",
+  "status": "ready",
+  "note": "Über das offizielle 1Password-CLI (op) und den OmniVault-Host (native/README.md). Voraussetzung: op installiert und angemeldet.",
+  "configFields": [],
+  "unlockMode": "none",
+  "optionalPermissions": [
+   "nativeMessaging"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login",
+    "note"
+   ],
+   "editTotp": true,
+   "fields": true,
+   "trash": true,
+   "folderLabel": "Tresor",
+   "moveFolder": true,
+   "createFolder": true
+  }
+ },
+ "lastpass": {
+  "id": "lastpass",
+  "label": "LastPass",
+  "status": "ready",
+  "note": "Über das offizielle LastPass-CLI (lpass) und den OmniVault-Host (native/README.md). Voraussetzung: lpass installiert und mit „lpass login“ angemeldet.",
+  "configFields": [],
+  "unlockMode": "none",
+  "optionalPermissions": [
+   "nativeMessaging"
+  ],
+  "capabilities": {
+   "write": true,
+   "types": [
+    "login",
+    "note"
+   ],
+   "favorites": false,
+   "folderLabel": "Gruppe",
+   "moveFolder": true,
+   "createFolder": true
+  }
+ }
+}
