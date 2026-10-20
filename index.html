@@ -108,37 +108,70 @@ p code, li code, td code { font-size: .86em; background: var(--accent-soft); pad
 .hero .note { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
 
 /* the popup, rebuilt with the extension's own list styles */
-.popup {
+.popup { position: relative;
   width: 100%; max-width: 400px; justify-self: end; background: var(--bg); border: 1px solid var(--border);
   border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 .popup header { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px 8px 12px; background: var(--panel); border-bottom: 2px solid var(--accent); }
 .popup header b { display: flex; align-items: center; gap: 8px; font-size: 15px; }
 .popup header .logo { width: 20px; height: 20px; }
-.popup .icons { display: flex; gap: 2px; color: var(--muted); }
-.popup .icons span { width: 28px; height: 28px; display: grid; place-items: center; }
-.popup .icons svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.popup .body { padding: 12px; }
-.popup .search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; margin-bottom: 10px; }
-.popup .search svg { width: 14px; height: 14px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; }
-.popup .caret { display: inline-block; width: 1px; height: 15px; background: var(--text); margin-left: 1px; vertical-align: -3px; animation: blink 1.1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+.popup .icons { display: flex; gap: 2px; position: relative; }
+.popup button { font: inherit; color: inherit; cursor: pointer; }
+.popup .icons > button { width: 28px; height: 28px; display: grid; place-items: center; border: 0; border-radius: 6px; background: transparent; color: var(--muted); padding: 0; }
+.popup .icons > button:hover, .popup .icons > button[aria-expanded="true"], .popup .icons > button[aria-pressed="true"] { background: var(--accent-soft); color: var(--text); }
+.popup svg.i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.popup .menu { position: absolute; right: 0; top: 32px; z-index: 3; min-width: 170px; padding: 4px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); }
+.popup .menu button { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 6px 8px; border-radius: 5px; color: var(--text); }
+.popup .menu button:hover, .popup .menu button:focus-visible { background: var(--accent-soft); }
+.popup .body { padding: 12px; height: 452px; overflow-y: auto; position: relative; }
+.popup .search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 0 8px; margin-bottom: 10px; }
+.popup .search:focus-within { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+.popup .search svg { width: 14px; height: 14px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; flex: none; }
+.popup .search input { flex: 1; border: 0; background: transparent; color: var(--text); font: inherit; padding: 6px 0; outline: none; min-width: 0; }
 .popup .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .chip { display: flex; align-items: center; gap: 6px; padding: 3px 8px 3px 5px; background: var(--panel); border: 1px solid var(--border); border-left: 3px solid hsl(var(--acc-h) 65% var(--badge-l)); border-radius: 6px; }
+.popup button.chip:hover { background: var(--accent-soft); }
+.popup button.chip[aria-pressed="false"] { opacity: .45; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+.locked .dot { background: var(--muted); }
 .badge { display: inline-grid; place-items: center; min-width: 24px; height: 18px; padding: 0 4px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .03em; color: #fff; background: hsl(var(--acc-h) 65% var(--badge-l)); flex: none; }
 .group-title { font-size: 12px; font-weight: 600; color: var(--muted); margin: 2px 0 6px; }
 .group + .group .group-title { margin-top: 12px; }
 .rows { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .item { padding: 8px 10px 8px 14px; box-shadow: inset 4px 0 0 hsl(var(--acc-h) 65% var(--badge-l)); }
 .item + .item { border-top: 1px solid var(--border); }
+.popup .item > button.row { all: unset; display: block; width: 100%; cursor: pointer; border-radius: 4px; }
+.popup .item > button.row:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.popup .item:hover { background: color-mix(in oklch, var(--accent-soft) 45%, var(--panel)); }
 .item .t { display: flex; gap: 8px; align-items: center; }
 .item .t svg { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--muted); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .item .n { font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .item .m { color: var(--muted); font-size: 12px; padding-left: 24px; }
-.item .b { display: flex; gap: 4px; margin-top: 6px; padding-left: 24px; }
-.item .b span { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
-.item .b span.fill { background: var(--accent); color: var(--accent-text); border-color: transparent; }
+.item .b { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding-left: 24px; }
+.popup .item .b button { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-variant-numeric: tabular-nums; }
+.popup .item .b button:hover { color: var(--text); background: var(--accent-soft); }
+.popup .item .b button.fill { background: var(--accent); color: var(--accent-text); border-color: transparent; }
+.popup .item .b button.fill:hover { background: var(--accent-hover); }
+.popup .empty, .popup .lockview { text-align: center; color: var(--muted); padding: 40px 12px; }
+.popup .lockview svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; margin-bottom: 8px; }
+.popup .lockview p { margin: 0 0 14px; }
+.popup .primary { border: 0; border-radius: 6px; padding: 6px 14px; background: var(--accent); color: var(--accent-text); font-weight: 600; }
+.popup .primary:hover { background: var(--accent-hover); }
+.popup .ghost { border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; background: transparent; color: var(--text); }
+.popup .ghost:hover { background: var(--accent-soft); }
+.popup .gen h4 { margin: 0 0 10px; font-size: 14px; }
+.popup .gen output { display: block; font: 15px/1.4 "JetBrains Mono", ui-monospace, monospace; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; word-break: break-all; margin-bottom: 8px; }
+.popup .meter { height: 4px; border-radius: 2px; background: var(--border); margin-bottom: 4px; overflow: hidden; }
+.popup .meter i { display: block; height: 100%; width: 92%; background: var(--ok); }
+.popup .gen small { color: var(--muted); display: block; margin-bottom: 14px; }
+.popup .gen label { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); margin-bottom: 14px; }
+.popup .gen input[type=range] { flex: 1; accent-color: var(--accent-ink); }
+.popup .gen .acts { display: flex; gap: 6px; justify-content: flex-end; }
+.popup .toast { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 8px 10px; border-radius: 8px; background: var(--text); color: var(--bg); font-size: 12.5px; box-shadow: var(--shadow); opacity: 0; transform: translateY(6px); transition: opacity .18s, transform .18s; pointer-events: none; }
+.popup .toast.show { opacity: 1; transform: none; }
+.popup-wrap { justify-self: end; width: 100%; max-width: 400px; }
+.popup-wrap .popup { justify-self: auto; }
+.try { margin: 12px 2px 0; font-size: 14px; color: var(--muted); }
 .bw { --acc-h: 214; } .pb { --acc-h: 160; } .op { --acc-h: 265; } .kx { --acc-h: 32; } .ps { --acc-h: 190; }
 
 /* sections */
@@ -197,7 +230,7 @@ footer nav { display: flex; flex-direction: column; gap: 6px; }
 @media (max-width: 900px) {
   .hero { padding: 48px 0 64px; }
   .hero .wrap { grid-template-columns: 1fr; gap: 48px; }
-  .popup { justify-self: start; }
+  .popup-wrap { justify-self: start; }
   section.block { padding: 64px 0; }
 }
 @media (max-width: 480px) { .wrap { padding: 0 16px; } body { font-size: 16px; } .hero .lede { font-size: 18px; } }
@@ -234,39 +267,25 @@ footer nav { display: flex; flex-direction: column; gap: 6px; }
         <p class="note">Free and open source under MPL 2.0. For Chrome, Edge, Brave and Firefox 128+.</p>
       </div>
 
-      <div class="popup" role="img" aria-label="The OmniVault popup: a search for “git” lists logins from Bitwarden, Passbolt, 1Password and KeePassXC in one list, each marked with its account color.">
+      <div class="popup-wrap">
+      <div class="popup" id="demo" role="region" aria-label="Interactive demo of the OmniVault popup with sample entries">
         <header>
           <b><svg class="logo" viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5"/><circle cx="10" cy="10" r="5.2"/><circle class="hub" cx="10" cy="10" r="1.6"/><path d="M11.99 5.2L12.53 3.9M14.8 8.01L16.1 7.47M14.8 11.99L16.1 12.53M11.99 14.8L12.53 16.1M8.01 14.8L7.47 16.1M5.2 11.99L3.9 12.53M5.2 8.01L3.9 7.47M8.01 5.2L7.47 3.9"/></svg>OmniVault</b>
           <div class="icons">
-            <span><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg></span>
-            <span><svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><circle cx="5.5" cy="5.5" r=".6"/><circle cx="10.5" cy="10.5" r=".6"/><circle cx="8" cy="8" r=".6"/></svg></span>
-            <span><svg viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 016 0v2"/></svg></span>
-            <span><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M3.6 12.4l1.1-1.1M11.3 4.7l1.1-1.1"/></svg></span>
+            <button type="button" id="d-new" title="New" aria-label="New" aria-haspopup="menu" aria-expanded="false"><svg class="i" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg></button>
+            <button type="button" id="d-gen" title="Password generator" aria-label="Password generator" aria-pressed="false"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><circle cx="5.5" cy="5.5" r=".6"/><circle cx="10.5" cy="10.5" r=".6"/><circle cx="8" cy="8" r=".6"/></svg></button>
+            <button type="button" id="d-lock" title="Lock all" aria-label="Lock all"><svg class="i" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 016 0v2"/></svg></button>
+            <button type="button" id="d-set" title="Settings" aria-label="Settings"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M3.6 12.4l1.1-1.1M11.3 4.7l1.1-1.1"/></svg></button>
+            <div class="menu" id="d-menu" role="menu" hidden>
+              <button type="button" role="menuitem" data-toast="In the extension this opens the editor for a new login.">New login</button>
+              <button type="button" role="menuitem" data-toast="In the extension you pick a password manager here and sign in.">Add account</button>
+            </div>
           </div>
         </header>
-        <div class="body">
-          <div class="search"><svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><span>git<span class="caret"></span></span></div>
-          <div class="chips">
-            <span class="chip bw"><span class="badge">BW</span>Personal<span class="dot"></span></span>
-            <span class="chip pb"><span class="badge">PB</span>Team<span class="dot"></span></span>
-            <span class="chip op"><span class="badge">1P</span>Family<span class="dot"></span></span>
-            <span class="chip kx"><span class="badge">KX</span>Offline<span class="dot"></span></span>
-          </div>
-          <div class="group">
-            <div class="group-title">On this site: github.com</div>
-            <div class="rows">
-              <div class="item bw"><div class="t"><svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg><span class="n">GitHub</span><span class="badge">BW</span></div><div class="m">ada@example.org</div><div class="b"><span class="fill">Fill</span><span>User</span><span>Password</span><span>482 913</span></div></div>
-              <div class="item pb"><div class="t"><svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg><span class="n">GitHub deploy bot</span><span class="badge">PB</span></div><div class="m">release-bot</div></div>
-            </div>
-          </div>
-          <div class="group">
-            <div class="group-title">Other matches</div>
-            <div class="rows">
-              <div class="item op"><div class="t"><svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg><span class="n">GitLab</span><span class="badge">1P</span></div><div class="m">ada.lovelace</div></div>
-              <div class="item kx"><div class="t"><svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg><span class="n">Gitea at home</span><span class="badge">KX</span></div><div class="m">admin</div></div>
-            </div>
-          </div>
-        </div>
+        <div class="body" id="d-body"></div>
+        <div class="toast" id="d-toast" role="status" aria-live="polite"></div>
+      </div>
+      <p class="try">Try it: a working demo with sample entries. Nothing leaves this page.</p>
       </div>
     </div>
   </section>
@@ -397,5 +416,155 @@ python3 install.py --chrome-id &lt;EXTENSION-ID&gt; --keepassxc   <span class="c
     </nav>
   </div>
 </footer>
+<script>
+(() => {
+  const ACCOUNTS = [
+    { id: 'bw', code: 'BW', label: 'Personal', manager: 'Bitwarden' },
+    { id: 'pb', code: 'PB', label: 'Team', manager: 'Passbolt' },
+    { id: 'op', code: '1P', label: 'Family', manager: '1Password' },
+    { id: 'kx', code: 'KX', label: 'Offline', manager: 'KeePassXC' },
+  ];
+  const ITEMS = [
+    { acc: 'bw', name: 'GitHub', user: 'ada@example.org', host: 'github.com', totp: true },
+    { acc: 'pb', name: 'GitHub deploy bot', user: 'release-bot', host: 'github.com' },
+    { acc: 'op', name: 'GitLab', user: 'ada.lovelace', host: 'gitlab.com', totp: true },
+    { acc: 'kx', name: 'Gitea at home', user: 'admin', host: 'git.home.arpa' },
+    { acc: 'bw', name: 'Mozilla Add-ons', user: 'ada@example.org', host: 'addons.mozilla.org' },
+    { acc: 'op', name: 'Netflix', user: 'family@example.org', host: 'netflix.com' },
+    { acc: 'pb', name: 'Grafana', user: 'ops', host: 'grafana.example.org', totp: true },
+    { acc: 'kx', name: 'Router', user: 'admin', host: '192.168.1.1' },
+  ];
+  const SITE = 'github.com';
+  const state = { q: 'git', on: new Set(ACCOUNTS.map(a => a.id)), sel: 0, locked: false, view: 'list', genLen: 20 };
+  const $ = id => document.getElementById(id);
+  const body = $('d-body'), toastEl = $('d-toast');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const acc = id => ACCOUNTS.find(a => a.id === id);
+  const person = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg>';
+
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+  // Deterministic sample TOTP that changes every 30 s, like a real one.
+  function totp(i) {
+    const step = Math.floor(Date.now() / 30000);
+    const n = ((step * 7919 + i * 104729) % 1000000 + 1000000) % 1000000;
+    const s = String(n).padStart(6, '0'); return s.slice(0, 3) + ' ' + s.slice(3);
+  }
+  const secsLeft = () => 30 - Math.floor(Date.now() / 1000) % 30;
+  function genPassword(len) {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!#$%&*+-=?@';
+    const r = new Uint32Array(len); crypto.getRandomValues(r);
+    return Array.from(r, v => chars[v % chars.length]).join('');
+  }
+  async function copy(text) { try { await navigator.clipboard.writeText(text); } catch {} }
+
+  function chips() {
+    return '<div class="chips">' + ACCOUNTS.map(a =>
+      `<button type="button" class="chip ${a.id}${state.locked ? ' locked' : ''}" data-chip="${a.id}" aria-pressed="${state.on.has(a.id)}" title="${a.manager}: show or hide">`
+      + `<span class="badge">${a.code}</span>${a.label}<span class="dot"></span></button>`).join('') + '</div>';
+  }
+  function itemHtml(it) {
+    const i = ITEMS.indexOf(it), a = acc(it.acc), open = state.sel === i;
+    let h = `<div class="item ${it.acc}"><button type="button" class="row" data-sel="${i}" aria-expanded="${open}">`
+      + `<span class="t">${person}<span class="n">${esc(it.name)}</span><span class="badge">${a.code}</span></span>`
+      + `<span class="m" style="display:block">${esc(it.user)}</span></button>`;
+    if (open) {
+      h += `<div class="b"><button type="button" class="fill" data-act="fill" data-i="${i}">Fill</button>`
+        + `<button type="button" data-act="user" data-i="${i}">User</button>`
+        + `<button type="button" data-act="pass" data-i="${i}">Password</button>`
+        + (it.totp ? `<button type="button" data-act="totp" data-i="${i}" title="Copy code, ${secsLeft()} s left">${totp(i)}</button>` : '')
+        + '</div>';
+    }
+    return h + '</div>';
+  }
+  function list() {
+    const q = state.q.trim().toLowerCase();
+    const hits = ITEMS.filter(it => state.on.has(it.acc) && (!q
+      || [it.name, it.user, it.host, acc(it.acc).label, acc(it.acc).manager].some(v => v.toLowerCase().includes(q))));
+    const here = hits.filter(it => it.host === SITE), other = hits.filter(it => it.host !== SITE);
+    let h = '';
+    if (here.length) h += `<div class="group"><div class="group-title">On this site: ${SITE}</div><div class="rows">${here.map(itemHtml).join('')}</div></div>`;
+    if (other.length) h += `<div class="group"><div class="group-title">${q ? 'Other matches' : 'All entries'}</div><div class="rows">${other.map(itemHtml).join('')}</div></div>`;
+    if (!hits.length) h = `<div class="empty">No entries match “${esc(state.q)}”.<br>Try another word or show more accounts.</div>`;
+    return h;
+  }
+  function render(focusSearch) {
+    $('d-gen').setAttribute('aria-pressed', state.view === 'gen');
+    if (state.view === 'gen') {
+      const pw = state.pw || (state.pw = genPassword(state.genLen));
+      body.innerHTML = `<div class="gen"><h4>Password generator</h4><output id="d-pw">${esc(pw)}</output>`
+        + `<div class="meter"><i style="width:${Math.min(100, 40 + state.genLen * 3)}%"></i></div><small>Very strong</small>`
+        + `<label>Length <input type="range" id="d-len" min="8" max="40" value="${state.genLen}"><span>${state.genLen}</span></label>`
+        + `<div class="acts"><button type="button" class="ghost" data-act="regen">New password</button><button type="button" class="primary" data-act="copygen">Copy</button></div></div>`;
+      return;
+    }
+    if (state.locked) {
+      body.innerHTML = chips() + `<div class="lockview"><svg viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>`
+        + `<p>All accounts are locked.<br>Your keys were discarded from memory.</p><button type="button" class="primary" data-act="unlock">Unlock</button></div>`;
+      return;
+    }
+    const prev = body.querySelector('#d-q');
+    const caret = prev && document.activeElement === prev ? prev.selectionStart : null;
+    body.innerHTML = `<label class="search"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>`
+      + `<input id="d-q" type="search" aria-label="Search all accounts" placeholder="Search all accounts" value="${esc(state.q)}" autocomplete="off" spellcheck="false"></label>`
+      + chips() + list();
+    if (caret !== null || focusSearch) { const q = $('d-q'); q.focus(); if (caret !== null) q.setSelectionRange(caret, caret); }
+  }
+
+  body.addEventListener('input', e => {
+    if (e.target.id === 'd-q') { state.q = e.target.value; state.sel = -1; render(); }
+    if (e.target.id === 'd-len') { state.genLen = +e.target.value; state.pw = genPassword(state.genLen); render(); $('d-len').focus(); }
+  });
+  body.addEventListener('click', e => {
+    const chip = e.target.closest('[data-chip]');
+    if (chip) {
+      if (state.locked) return toast('Unlock first to filter accounts.');
+      const id = chip.dataset.chip;
+      state.on.has(id) ? state.on.delete(id) : state.on.add(id);
+      render(); body.querySelector(`[data-chip="${id}"]`).focus(); return;
+    }
+    const row = e.target.closest('[data-sel]');
+    if (row) { const i = +row.dataset.sel; state.sel = state.sel === i ? -1 : i; render(); body.querySelector(`[data-sel="${i}"]`).focus(); return; }
+    const btn = e.target.closest('[data-act]'); if (!btn) return;
+    const it = ITEMS[+btn.dataset.i];
+    switch (btn.dataset.act) {
+      case 'fill': toast(it.host === SITE ? `Filled ${it.name} on ${SITE}.` : `${it.host} doesn’t match ${SITE}. The extension asks before filling.`); break;
+      case 'user': copy(it.user); toast('Username copied.'); break;
+      case 'pass': copy('sample-' + genPassword(10)); toast('Password copied. The clipboard is cleared after 30 seconds.'); break;
+      case 'totp': copy(btn.textContent.replace(' ', '')); toast(`Code copied, valid for ${secsLeft()} more seconds.`); break;
+      case 'unlock': state.locked = false; render(true); toast('Unlocked. In the extension you’d enter your master password or PIN.'); break;
+      case 'regen': state.pw = genPassword(state.genLen); render(); body.querySelector('[data-act="regen"]').focus(); break;
+      case 'copygen': copy(state.pw); toast('Password copied and added to the generator history.'); break;
+    }
+  });
+
+  const menu = $('d-menu'), newBtn = $('d-new');
+  function closeMenu() { menu.hidden = true; newBtn.setAttribute('aria-expanded', 'false'); }
+  newBtn.addEventListener('click', e => {
+    e.stopPropagation(); const open = menu.hidden; menu.hidden = !open; newBtn.setAttribute('aria-expanded', open);
+    if (open) menu.querySelector('button').focus();
+  });
+  menu.addEventListener('click', e => { const b = e.target.closest('[data-toast]'); if (b) { closeMenu(); toast(b.dataset.toast); newBtn.focus(); } });
+  document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { closeMenu(); newBtn.focus(); } });
+  $('d-gen').addEventListener('click', () => { state.view = state.view === 'gen' ? 'list' : 'gen'; render(); });
+  $('d-lock').addEventListener('click', () => {
+    state.view = 'list';
+    if (state.locked) return toast('Already locked.');
+    state.locked = true; render(); toast('All accounts locked.');
+  });
+  $('d-set').addEventListener('click', () => toast('Settings live in the extension: auto-lock, PIN, language, appearance.'));
+
+  // keep the TOTP code current
+  setInterval(() => {
+    const b = body.querySelector('[data-act="totp"]');
+    if (b) { b.textContent = totp(+b.dataset.i); b.title = `Copy code, ${secsLeft()} s left`; }
+  }, 1000);
+  render();
+})();
+</script>
 </body>
 </html>
