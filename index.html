@@ -97,19 +97,21 @@ p code, li code, td code { font-size: .86em; background: var(--accent-soft); pad
 .btn svg { width: 18px; height: 18px; }
 
 /* hero */
-.hero { padding: 72px 0 80px; }
-.hero .top-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; }
+.hero { padding: 72px 0 88px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) 392px; gap: 48px 64px; align-items: center; }
 .hero h1 {
   font-size: clamp(42px, 6.2vw, 76px); line-height: 1.02; letter-spacing: -.035em; font-weight: 800;
-  margin: 0; max-width: 12ch; text-wrap: balance;
+  margin: 0 0 24px; max-width: 12ch; text-wrap: balance;
 }
-.hero .lede { font-size: 20px; line-height: 1.55; color: var(--muted); max-width: 34em; margin: 0 0 28px; }
+.hero .lede { font-size: 20px; line-height: 1.55; color: var(--muted); max-width: 34em; margin: 0 0 32px; }
 .hero .cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .note { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
-/* the real popup of the extension, built from its source (demo/ in the OmniVault repository) */
-.demo { margin-top: 56px; }
-.demo iframe { display: block; width: 100%; height: 640px; border: 0; border-radius: 12px; box-shadow: var(--shadow); background: transparent; }
-.demo p { margin: 14px 2px 0; font-size: 15px; color: var(--muted); max-width: 60em; }
+/* OmniVault in a browser toolbar (demo/, built from the OmniVault repository); the sample website opens on demand */
+.demo iframe { display: block; width: 392px; max-width: 100%; height: 614px; border: 0; border-radius: 10px; background: transparent; box-shadow: var(--shadow); }
+.demo p { margin: 14px 2px 0; font-size: 14px; color: var(--muted); max-width: 392px; }
+.hero.expanded .wrap { grid-template-columns: minmax(0, 1fr); }
+.hero.expanded .demo iframe { width: 100%; height: 660px; }
+.hero.expanded .demo p { max-width: 60em; }
 
 /* account hues, the same as the demo accounts */
 .bw { --acc-h: 212; } .pb { --acc-h: 148; } .op { --acc-h: 272; } .kx { --acc-h: 32; } .ps { --acc-h: 186; }
@@ -169,8 +171,7 @@ footer nav { display: flex; flex-direction: column; gap: 6px; }
 
 @media (max-width: 900px) {
   .hero { padding: 48px 0 64px; }
-  .hero .top-row { grid-template-columns: 1fr; gap: 24px; }
-  .demo iframe { height: 620px; }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 48px; }
   section.block { padding: 64px 0; }
 }
 @media (max-width: 480px) { .wrap { padding: 0 16px; } body { font-size: 16px; } .hero .lede { font-size: 18px; } }
@@ -192,25 +193,23 @@ footer nav { display: flex; flex-direction: column; gap: 6px; }
 </header>
 
 <main>
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="wrap">
-      <div class="top-row">
+      <div>
         <h1>One browser extension for all your password managers.</h1>
-        <div>
-          <p class="lede">Search Bitwarden, Passbolt, 1Password, KeePassXC and more at once. Copy and fill logins, sign in with passkeys and move entries between managers, without giving up the one you already use.</p>
-          <div class="cta">
+        <p class="lede">Search Bitwarden, Passbolt, 1Password, KeePassXC and more at once. Copy and fill logins, sign in with passkeys and move entries between managers, without giving up the one you already use.</p>
+        <div class="cta">
           <a class="btn" href="#install">Install from source</a>
           <a class="btn secondary" href="https://github.com/omni-vault/OmniVault">
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
             View on GitHub
           </a>
         </div>
-          <p class="note">Free and open source under MPL 2.0. For Chrome, Edge, Brave and Firefox 128+.</p>
-        </div>
+        <p class="note">Free and open source under MPL 2.0. For Chrome, Edge, Brave and Firefox 128+.</p>
       </div>
       <div class="demo">
-        <iframe src="demo/index.html" title="Live demo: the OmniVault popup next to a sample website" loading="eager"></iframe>
-        <p>Try it: this is the actual OmniVault popup, running with four sample accounts and a sample website to fill. Lock it and any password unlocks it again. Nothing leaves this page.</p>
+        <iframe id="demo" src="demo/index.html" title="Live demo of the OmniVault popup in a browser toolbar"></iframe>
+        <p>Try it with four sample accounts. Fill opens a sample website to fill into. Locked? Any password unlocks the demo.</p>
       </div>
     </div>
   </section>
@@ -341,5 +340,13 @@ python3 install.py --chrome-id &lt;EXTENSION-ID&gt; --keepassxc   <span class="c
     </nav>
   </div>
 </footer>
+<script>
+  // the demo reports when its sample website opens or closes; the hero gives it the room it needs
+  addEventListener('message', (e) => {
+    if (e.origin !== location.origin || e.data?.omnivaultDemo !== 'layout') return;
+    document.getElementById('hero').classList.toggle('expanded', !!e.data.expanded);
+    if (e.data.expanded) document.getElementById('demo').scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+</script>
 </body>
 </html>
